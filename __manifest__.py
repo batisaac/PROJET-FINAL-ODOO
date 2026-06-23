@@ -35,8 +35,6 @@
         'report/report_inventaire.xml',
         'report/report_maintenance.xml',
         'views/menu.xml',
-    ],
-    'demo': [
         'data/it_parc_demo.xml',
     ],
     'assets': {
