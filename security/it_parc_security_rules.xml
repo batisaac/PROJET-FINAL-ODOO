@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Règle : Technicien ne voit que ses propres interventions -->
+        <record id="rule_it_intervention_technicien" model="ir.rule">
+            <field name="name">IT Technicien : ses propres interventions</field>
+            <field name="model_id" ref="model_it_intervention"/>
+            <field name="group_id" ref="group_it_technicien"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Règle : Manager voit toutes les interventions -->
+        <record id="rule_it_intervention_manager" model="ir.rule">
+            <field name="name">IT Manager : toutes les interventions</field>
+            <field name="model_id" ref="model_it_intervention"/>
+            <field name="group_id" ref="group_it_manager"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+    </data>
+</odoo>

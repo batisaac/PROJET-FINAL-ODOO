@@ -29,6 +29,11 @@
         <field name="arch" type="xml">
             <form string="Contrat fournisseur">
                 <header>
+                    <button name="action_renouveler"
+                            string="Renouveler"
+                            type="object"
+                            class="btn-primary"
+                            invisible="etat not in ('actif', 'expire')"/>
                     <field name="etat" widget="statusbar"
                            statusbar_visible="actif,expire,resilie,renouvele"/>
                 </header>

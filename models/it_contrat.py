@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api
 
 
@@ -50,3 +51,22 @@ class ItContrat(models.Model):
     def _compute_nb_equipements(self):
         for rec in self:
             rec.nb_equipements = len(rec.equipement_ids)
+
+    def action_renouveler(self):
+        self.ensure_one()
+        duree = (self.date_fin - self.date_debut).days
+        nouveau = self.copy(default={
+            'date_debut': self.date_fin,
+            'date_fin': self.date_fin + relativedelta(days=duree),
+            'etat': 'actif',
+            'name': f"{self.name}-RENOUVELLEMENT",
+        })
+        self.etat = 'renouvele'
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Nouveau contrat',
+            'res_model': 'it.contrat',
+            'res_id': nouveau.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }

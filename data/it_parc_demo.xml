@@ -1,2 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo/>
+<odoo>
+    <!-- ============================================================
+         CATÉGORIES D'ÉQUIPEMENT
+    ============================================================ -->
+    <record id="demo_cat_pc" model="product.category">
+        <field name="name">Ordinateur portable</field>
+    </record>
+    <record id="demo_cat_serveur" model="product.category">
+        <field name="name">Serveur</field>
+    </record>
+    <record id="demo_cat_reseau" model="product.category">
+        <field name="name">Équipement réseau</field>
+    </record>
+
+    <!-- ============================================================
+         FOURNISSEURS
+    ============================================================ -->
+    <record id="demo_fournisseur_1" model="res.partner">
+        <field name="name">DELL Technologies Abidjan</field>
+        <field name="email">contact@dell-ci.com</field>
+        <field name="phone">+225 27 22 45 67 89</field>
+        <field name="city">Abidjan</field>
+    </record>
+    <record id="demo_fournisseur_2" model="res.partner">
+        <field name="name">HP Côte d'Ivoire</field>
+        <field name="email">info@hp-ci.com</field>
+        <field name="phone">+225 27 22 34 56 78</field>
+        <field name="city">Abidjan</field>
+    </record>
+    <record id="demo_fournisseur_3" model="res.partner">
+        <field name="name">Cisco Systems</field>
+        <field name="email">cisco@reseau-ci.com</field>
+        <field name="phone">+225 27 22 12 34 56</field>
+        <field name="city">Abidjan</field>
+    </record>
+
+    <!-- ============================================================
+         EMPLOYÉS
+    ============================================================ -->
+    <record id="demo_emp_dsi" model="hr.employee">
+        <field name="name">Kouamé Jean</field>
+        <field name="job_title">Directeur DSI</field>
+        <field name="work_email">j.kouame@techpark.ci</field>
+    </record>
+    <record id="demo_emp_tech" model="hr.employee">
+        <field name="name">Koné Issa</field>
+        <field name="job_title">Technicien IT</field>
+        <field name="work_email">i.kone@techpark.ci</field>
+    </record>
+    <record id="demo_emp_compta" model="hr.employee">
+        <field name="name">Diallo Fatoumata</field>
+        <field name="job_title">Comptable</field>
+        <field name="work_email">f.diallo@techpark.ci</field>
+    </record>
+
+    <!-- ============================================================
+         ÉQUIPEMENTS MAINTENANCE (liés au module maintenance)
+    ============================================================ -->
+    <record id="demo_mt_eq_pc_dell" model="maintenance.equipment">
+        <field name="name">DELL Latitude 5540 - JKA001</field>
+        <field name="serial_no">SN-DELL-001</field>
+        <field name="category_id" ref="maintenance.equipment_category_computer"/>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+    <record id="demo_mt_eq_pc_hp" model="maintenance.equipment">
+        <field name="name">HP EliteBook 840 - KKA002</field>
+        <field name="serial_no">SN-HP-001</field>
+        <field name="category_id" ref="maintenance.equipment_category_computer"/>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+    <record id="demo_mt_eq_serveur" model="maintenance.equipment">
+        <field name="name">DELL PowerEdge R740 - SRV001</field>
+        <field name="serial_no">SN-SRV-001</field>
+        <field name="category_id" ref="maintenance.equipment_category_server"/>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+    <record id="demo_mt_eq_switch" model="maintenance.equipment">
+        <field name="name">Cisco Catalyst 9300 - SW001</field>
+        <field name="serial_no">SN-CISCO-001</field>
+        <field name="category_id" ref="maintenance.equipment_category_network"/>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+    <record id="demo_mt_eq_imprimante" model="maintenance.equipment">
+        <field name="name">HP LaserJet Pro M404dn - IMP001</field>
+        <field name="serial_no">SN-IMP-001</field>
+        <field name="category_id" ref="maintenance.equipment_category_printer"/>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+
+    <!-- ============================================================
+         ÉQUIPEMENTS INFORMATIQUES (it.equipement)
+    ============================================================ -->
+    <record id="demo_eq_01" model="it.equipement">
+        <field name="nom">DELL Latitude 5540</field>
+        <field name="numero_serie">SN-DELL-001</field>
+        <field name="categorie_id" ref="demo_cat_pc"/>
+        <field name="marque">DELL</field>
+        <field name="modele">Latitude 5540</field>
+        <field name="employe_id" ref="demo_emp_dsi"/>
+        <field name="localisation">Abidjan-Cocody</field>
+        <field name="valeur_achat">850000</field>
+        <field name="date_achat">2025-03-15</field>
+        <field name="date_fin_garantie">2027-03-15</field>
+        <field name="etat">affecte</field>
+    </record>
+    <record id="demo_eq_02" model="it.equipement">
+        <field name="nom">HP EliteBook 840</field>
+        <field name="numero_serie">SN-HP-001</field>
+        <field name="categorie_id" ref="demo_cat_pc"/>
+        <field name="marque">HP</field>
+        <field name="modele">EliteBook 840 G10</field>
+        <field name="employe_id" ref="demo_emp_tech"/>
+        <field name="localisation">Abidjan-Cocody</field>
+        <field name="valeur_achat">750000</field>
+        <field name="date_achat">2025-06-01</field>
+        <field name="date_fin_garantie">2027-06-01</field>
+        <field name="etat">affecte</field>
+    </record>
+    <record id="demo_eq_03" model="it.equipement">
+        <field name="nom">DELL PowerEdge R740</field>
+        <field name="numero_serie">SN-SRV-001</field>
+        <field name="categorie_id" ref="demo_cat_serveur"/>
+        <field name="marque">DELL</field>
+        <field name="modele">PowerEdge R740</field>
+        <field name="employe_id" ref="demo_emp_dsi"/>
+        <field name="localisation">Salle serveur - Abidjan</field>
+        <field name="valeur_achat">4500000</field>
+        <field name="date_achat">2024-01-10</field>
+        <field name="date_fin_garantie">2026-05-10</field>
+        <field name="etat">maintenance</field>
+    </record>
+    <record id="demo_eq_04" model="it.equipement">
+        <field name="nom">Cisco Catalyst 9300</field>
+        <field name="numero_serie">SN-CISCO-001</field>
+        <field name="categorie_id" ref="demo_cat_reseau"/>
+        <field name="marque">Cisco</field>
+        <field name="modele">Catalyst 9300-48P</field>
+        <field name="localisation">Salle serveur - Abidjan</field>
+        <field name="valeur_achat">1200000</field>
+        <field name="date_achat">2024-06-15</field>
+        <field name="date_fin_garantie">2027-06-15</field>
+        <field name="etat">affecte</field>
+    </record>
+    <record id="demo_eq_05" model="it.equipement">
+        <field name="nom">HP LaserJet Pro M404dn</field>
+        <field name="numero_serie">SN-IMP-001</field>
+        <field name="categorie_id" ref="demo_cat_pc"/>
+        <field name="marque">HP</field>
+        <field name="modele">LaserJet Pro M404dn</field>
+        <field name="localisation">Open space - Cocody</field>
+        <field name="valeur_achat">250000</field>
+        <field name="date_achat">2024-09-01</field>
+        <field name="date_fin_garantie">2026-09-01</field>
+        <field name="etat">affecte</field>
+    </record>
+    <record id="demo_eq_06" model="it.equipement">
+        <field name="nom">DELL Latitude 3420</field>
+        <field name="numero_serie">SN-DELL-002</field>
+        <field name="categorie_id" ref="demo_cat_pc"/>
+        <field name="marque">DELL</field>
+        <field name="modele">Latitude 3420</field>
+        <field name="employe_id" ref="demo_emp_compta"/>
+        <field name="localisation">Abidjan-Cocody</field>
+        <field name="valeur_achat">650000</field>
+        <field name="date_achat">2024-11-20</field>
+        <field name="date_fin_garantie">2026-11-20</field>
+        <field name="etat">brouillon</field>
+    </record>
+    <record id="demo_eq_07" model="it.equipement">
+        <field name="nom">Lenovo ThinkCentre M90a</field>
+        <field name="numero_serie">SN-LENOVO-001</field>
+        <field name="categorie_id" ref="demo_cat_pc"/>
+        <field name="marque">Lenovo</field>
+        <field name="modele">ThinkCentre M90a Gen 4</field>
+        <field name="localisation">Antenne Bouaké</field>
+        <field name="valeur_achat">550000</field>
+        <field name="date_achat">2023-02-15</field>
+        <field name="date_fin_garantie">2025-02-15</field>
+        <field name="etat">retire</field>
+    </record>
+    <record id="demo_eq_08" model="it.equipement">
+        <field name="nom">Synology DS923+</field>
+        <field name="numero_serie">SN-SYN-001</field>
+        <field name="categorie_id" ref="demo_cat_serveur"/>
+        <field name="marque">Synology</field>
+        <field name="modele">DiskStation DS923+</field>
+        <field name="localisation">Salle serveur - Abidjan</field>
+        <field name="valeur_achat">850000</field>
+        <field name="date_achat">2025-08-01</field>
+        <field name="date_fin_garantie">2027-08-01</field>
+        <field name="etat">affecte</field>
+    </record>
+    <record id="demo_eq_09" model="it.equipement">
+        <field name="nom">Ubiquiti UniFi AP-AC-Pro</field>
+        <field name="numero_serie">SN-UBI-001</field>
+        <field name="categorie_id" ref="demo_cat_reseau"/>
+        <field name="marque">Ubiquiti</field>
+        <field name="modele">UniFi AP-AC-Pro</field>
+        <field name="localisation">Open space - Cocody</field>
+        <field name="valeur_achat">180000</field>
+        <field name="date_achat">2024-03-01</field>
+        <field name="date_fin_garantie">2026-03-01</field>
+        <field name="etat">affecte</field>
+    </record>
+    <record id="demo_eq_10" model="it.equipement">
+        <field name="nom">APC Smart-UPS 1500VA</field>
+        <field name="numero_serie">SN-APC-001</field>
+        <field name="categorie_id" ref="demo_cat_reseau"/>
+        <field name="marque">APC</field>
+        <field name="modele">Smart-UPS SMT1500</field>
+        <field name="localisation">Salle serveur - Abidjan</field>
+        <field name="valeur_achat">450000</field>
+        <field name="date_achat">2024-12-01</field>
+        <field name="date_fin_garantie">2027-12-01</field>
+        <field name="etat">affecte</field>
+    </record>
+
+    <!-- ============================================================
+         CONTRATS
+    ============================================================ -->
+    <record id="demo_ct_01" model="it.contrat">
+        <field name="name">MAINT-DELL-2025</field>
+        <field name="type_contrat">maintenance</field>
+        <field name="fournisseur_id" ref="demo_fournisseur_1"/>
+        <field name="date_debut">2025-01-01</field>
+        <field name="date_fin">2025-12-31</field>
+        <field name="montant">2400000</field>
+        <field name="etat">actif</field>
+        <field name="equipement_ids" eval="[(4, ref('demo_eq_01')), (4, ref('demo_eq_03')), (4, ref('demo_eq_06'))]"/>
+    </record>
+    <record id="demo_ct_02" model="it.contrat">
+        <field name="name">LIC-OFFICE-365</field>
+        <field name="type_contrat">licence</field>
+        <field name="fournisseur_id" ref="demo_fournisseur_2"/>
+        <field name="date_debut">2025-06-01</field>
+        <field name="date_fin">2026-05-31</field>
+        <field name="montant">3600000</field>
+        <field name="etat">actif</field>
+        <field name="equipement_ids" eval="[(4, ref('demo_eq_01')), (4, ref('demo_eq_02')), (4, ref('demo_eq_06'))]"/>
+    </record>
+    <record id="demo_ct_03" model="it.contrat">
+        <field name="name">SUPPORT-CISCO-2024</field>
+        <field name="type_contrat">support</field>
+        <field name="fournisseur_id" ref="demo_fournisseur_3"/>
+        <field name="date_debut">2024-06-15</field>
+        <field name="date_fin">2025-06-14</field>
+        <field name="montant">1500000</field>
+        <field name="etat">actif</field>
+        <field name="equipement_ids" eval="[(4, ref('demo_eq_04'))]"/>
+    </record>
+
+    <!-- ============================================================
+         INTERVENTIONS
+    ============================================================ -->
+    <record id="demo_int_01" model="it.intervention">
+        <field name="name">Remplacement disque dur - SRV001</field>
+        <field name="maintenance_type">corrective</field>
+        <field name="type_intervention">corrective</field>
+        <field name="equipment_id" ref="demo_mt_eq_serveur"/>
+        <field name="equipement_id" ref="demo_eq_03"/>
+        <field name="priority">3</field>
+        <field name="schedule_date">2026-06-10 09:00:00</field>
+        <field name="close_date">2026-06-10 15:30:00</field>
+        <field name="stage_id" ref="maintenance.stage_3"/>
+        <field name="cout">150000</field>
+        <field name="rapport_intervention">Remplacement du disque dur défaillant (modèle : DELL 1TB SAS). Test de performance OK. Serveur remis en production.</field>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+    <record id="demo_int_02" model="it.intervention">
+        <field name="name">Maintenance préventive réseau</field>
+        <field name="maintenance_type">preventive</field>
+        <field name="type_intervention">preventive</field>
+        <field name="equipment_id" ref="demo_mt_eq_switch"/>
+        <field name="equipement_id" ref="demo_eq_04"/>
+        <field name="priority">2</field>
+        <field name="schedule_date">2026-06-15 08:00:00</field>
+        <field name="stage_id" ref="maintenance.stage_1"/>
+        <field name="cout">75000</field>
+        <field name="rapport_intervention">Vérification des logs, mise à jour firmware, nettoyage physique des équipements.</field>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+    <record id="demo_int_03" model="it.intervention">
+        <field name="name">Nettoyage imprimante + changement toner</field>
+        <field name="maintenance_type">preventive</field>
+        <field name="type_intervention">preventive</field>
+        <field name="equipment_id" ref="demo_mt_eq_imprimante"/>
+        <field name="equipement_id" ref="demo_eq_05"/>
+        <field name="priority">1</field>
+        <field name="schedule_date">2026-06-05 10:00:00</field>
+        <field name="close_date">2026-06-05 11:00:00</field>
+        <field name="stage_id" ref="maintenance.stage_3"/>
+        <field name="cout">25000</field>
+        <field name="rapport_intervention">Nettoyage des têtes d'impression, remplacement toner noir, impression test OK.</field>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+    <record id="demo_int_04" model="it.intervention">
+        <field name="name">Diagnostic panne écran - Latitude 3420</field>
+        <field name="maintenance_type">corrective</field>
+        <field name="type_intervention">corrective</field>
+        <field name="equipment_id" ref="demo_mt_eq_pc_dell"/>
+        <field name="equipement_id" ref="demo_eq_06"/>
+        <field name="priority">2</field>
+        <field name="schedule_date">2026-06-18 14:00:00</field>
+        <field name="stage_id" ref="maintenance.stage_1"/>
+        <field name="cout">0</field>
+        <field name="rapport_intervention">Diagnostic en cours : écran LCD clignotant. Commande pièce en attente.</field>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+    <record id="demo_int_05" model="it.intervention">
+        <field name="name">Mise à jour sécurité serveur PowerEdge</field>
+        <field name="maintenance_type">preventive</field>
+        <field name="type_intervention">preventive</field>
+        <field name="equipment_id" ref="demo_mt_eq_serveur"/>
+        <field name="equipement_id" ref="demo_eq_03"/>
+        <field name="priority">3</field>
+        <field name="schedule_date">2026-06-20 22:00:00</field>
+        <field name="stage_id" ref="maintenance.stage_0"/>
+        <field name="cout">0</field>
+        <field name="rapport_intervention">Application des patchs de sécurité mensuels. Fenêtre de maintenance nocturne programmée.</field>
+        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
+    </record>
+</odoo>

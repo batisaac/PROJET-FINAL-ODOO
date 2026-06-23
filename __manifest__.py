@@ -18,6 +18,7 @@
     ],
     'data': [
         'security/security_groups.xml',
+        'security/it_parc_security_rules.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
         'data/ir_cron.xml',
