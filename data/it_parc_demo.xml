@@ -55,40 +55,6 @@
     </record>
 
     <!-- ============================================================
-         ÉQUIPEMENTS MAINTENANCE (liés au module maintenance)
-    ============================================================ -->
-    <record id="demo_mt_eq_pc_dell" model="maintenance.equipment">
-        <field name="name">DELL Latitude 5540 - JKA001</field>
-        <field name="serial_no">SN-DELL-001</field>
-        <field name="category_id" ref="maintenance.equipment_category_computer"/>
-        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
-    </record>
-    <record id="demo_mt_eq_pc_hp" model="maintenance.equipment">
-        <field name="name">HP EliteBook 840 - KKA002</field>
-        <field name="serial_no">SN-HP-001</field>
-        <field name="category_id" ref="maintenance.equipment_category_computer"/>
-        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
-    </record>
-    <record id="demo_mt_eq_serveur" model="maintenance.equipment">
-        <field name="name">DELL PowerEdge R740 - SRV001</field>
-        <field name="serial_no">SN-SRV-001</field>
-        <field name="category_id" ref="maintenance.equipment_category_server"/>
-        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
-    </record>
-    <record id="demo_mt_eq_switch" model="maintenance.equipment">
-        <field name="name">Cisco Catalyst 9300 - SW001</field>
-        <field name="serial_no">SN-CISCO-001</field>
-        <field name="category_id" ref="maintenance.equipment_category_network"/>
-        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
-    </record>
-    <record id="demo_mt_eq_imprimante" model="maintenance.equipment">
-        <field name="name">HP LaserJet Pro M404dn - IMP001</field>
-        <field name="serial_no">SN-IMP-001</field>
-        <field name="category_id" ref="maintenance.equipment_category_printer"/>
-        <field name="maintenance_team_id" ref="maintenance.equipment_team_maintenance"/>
-    </record>
-
-    <!-- ============================================================
          ÉQUIPEMENTS INFORMATIQUES (it.equipement)
     ============================================================ -->
     <record id="demo_eq_01" model="it.equipement">
@@ -257,8 +223,8 @@
         <field name="name">Remplacement disque dur - SRV001</field>
         <field name="maintenance_type">corrective</field>
         <field name="type_intervention">corrective</field>
-        <field name="equipment_id" ref="demo_mt_eq_serveur"/>
         <field name="equipement_id" ref="demo_eq_03"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="priority">3</field>
         <field name="schedule_date">2026-06-10 09:00:00</field>
         <field name="close_date">2026-06-10 15:30:00</field>
@@ -271,8 +237,8 @@
         <field name="name">Maintenance préventive réseau</field>
         <field name="maintenance_type">preventive</field>
         <field name="type_intervention">preventive</field>
-        <field name="equipment_id" ref="demo_mt_eq_switch"/>
         <field name="equipement_id" ref="demo_eq_04"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="priority">2</field>
         <field name="schedule_date">2026-06-15 08:00:00</field>
         <field name="stage_id" ref="maintenance.stage_1"/>
@@ -284,8 +250,8 @@
         <field name="name">Nettoyage imprimante + changement toner</field>
         <field name="maintenance_type">preventive</field>
         <field name="type_intervention">preventive</field>
-        <field name="equipment_id" ref="demo_mt_eq_imprimante"/>
         <field name="equipement_id" ref="demo_eq_05"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="priority">1</field>
         <field name="schedule_date">2026-06-05 10:00:00</field>
         <field name="close_date">2026-06-05 11:00:00</field>
@@ -298,8 +264,8 @@
         <field name="name">Diagnostic panne écran - Latitude 3420</field>
         <field name="maintenance_type">corrective</field>
         <field name="type_intervention">corrective</field>
-        <field name="equipment_id" ref="demo_mt_eq_pc_dell"/>
         <field name="equipement_id" ref="demo_eq_06"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="priority">2</field>
         <field name="schedule_date">2026-06-18 14:00:00</field>
         <field name="stage_id" ref="maintenance.stage_1"/>
@@ -311,8 +277,8 @@
         <field name="name">Mise à jour sécurité serveur PowerEdge</field>
         <field name="maintenance_type">preventive</field>
         <field name="type_intervention">preventive</field>
-        <field name="equipment_id" ref="demo_mt_eq_serveur"/>
         <field name="equipement_id" ref="demo_eq_03"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="priority">3</field>
         <field name="schedule_date">2026-06-20 22:00:00</field>
         <field name="stage_id" ref="maintenance.stage_0"/>
