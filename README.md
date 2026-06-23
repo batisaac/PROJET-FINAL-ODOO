@@ -1,4 +1,4 @@
-# IT Parc — Module Odoo 18
+# IT Parc — Module Odoo 18 BATOUA ISAAC
 
 ## Installation
 1. Copier le dossier `it_parc` dans le répertoire `addons/` d'Odoo
