@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_it_alerte_list" model="ir.ui.view">
+        <field name="name">it.alerte.list</field>
+        <field name="model">it.alerte</field>
+        <field name="arch" type="xml">
+            <list string="Alertes"
+                decoration-danger="jours_restants &lt; 0"
+                decoration-warning="jours_restants &gt;= 0 and jours_restants &lt;= 15"
+                decoration-muted="etat in ('traitee', 'ignoree')">
+                <header>
+                    <button name="action_generer_maintenant"
+                            string="Générer les alertes"
+                            type="object"
+                            class="btn-primary"/>
+                </header>
+                <field name="name"/>
+                <field name="type_alerte"/>
+                <field name="equipement_id"/>
+                <field name="contrat_id"/>
+                <field name="date_echeance"/>
+                <field name="jours_restants"/>
+                <field name="etat" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_it_alerte_form" model="ir.ui.view">
+        <field name="name">it.alerte.form</field>
+        <field name="model">it.alerte</field>
+        <field name="arch" type="xml">
+            <form string="Alerte">
+                <header>
+                    <button name="action_traiter"
+                            string="Marquer comme traitée"
+                            type="object"
+                            class="btn-primary"
+                            invisible="etat != 'active'"/>
+                    <button name="action_ignorer"
+                            string="Ignorer"
+                            type="object"
+                            invisible="etat != 'active'"/>
+                    <field name="etat" widget="statusbar"
+                           statusbar_visible="active,traitee,ignoree"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Informations">
+                            <field name="name"/>
+                            <field name="type_alerte"/>
+                            <field name="date_echeance"/>
+                            <field name="jours_restants" readonly="1"/>
+                        </group>
+                        <group string="Concerne">
+                            <field name="equipement_id"
+                                   invisible="type_alerte != 'garantie'"/>
+                            <field name="contrat_id"
+                                   invisible="type_alerte != 'contrat'"/>
+                        </group>
+                    </group>
+                    <group string="Détails">
+                        <field name="message" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_it_alerte_search" model="ir.ui.view">
+        <field name="name">it.alerte.search</field>
+        <field name="model">it.alerte</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher une alerte">
+                <field name="name"/>
+                <field name="equipement_id"/>
+                <field name="contrat_id"/>
+                <filter string="Actives" name="actives"
+                        domain="[('etat','=','active')]"/>
+                <filter string="Garanties" name="garanties"
+                        domain="[('type_alerte','=','garantie')]"/>
+                <filter string="Contrats" name="contrats"
+                        domain="[('type_alerte','=','contrat')]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="Type" name="group_type"
+                            context="{'group_by': 'type_alerte'}"/>
+                    <filter string="État" name="group_etat"
+                            context="{'group_by': 'etat'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_it_alerte" model="ir.actions.act_window">
+        <field name="name">Alertes</field>
+        <field name="res_model">it.alerte</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_alerte_search"/>
+        <field name="context">{'search_default_actives': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune alerte active.
+            </p>
+            <p>Les alertes sont générées automatiquement par le système.</p>
+        </field>
+    </record>
+
+    <record id="action_server_generer_alertes" model="ir.actions.server">
+        <field name="name">Générer les alertes maintenant</field>
+        <field name="model_id" ref="model_it_alerte"/>
+        <field name="binding_model_id" ref="model_it_alerte"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+    env['it.alerte'].generer_alertes(delai_jours=30)
+        </field>
+    </record>
+
+</odoo>

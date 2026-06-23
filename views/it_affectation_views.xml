@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_it_affectation_list" model="ir.ui.view">
+        <field name="name">it.affectation.list</field>
+        <field name="model">it.affectation</field>
+        <field name="arch" type="xml">
+            <list string="Affectations"
+                  decoration-success="est_actuelle == True"
+                  decoration-muted="est_actuelle == False">
+                <field name="equipement_id"/>
+                <field name="employe_id"/>
+                <field name="department_id"/>
+                <field name="date_affectation"/>
+                <field name="date_retour"/>
+                <field name="duree_jours"/>
+                <field name="motif"/>
+                <field name="est_actuelle" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_it_affectation_form" model="ir.ui.view">
+        <field name="name">it.affectation.form</field>
+        <field name="model">it.affectation</field>
+        <field name="arch" type="xml">
+            <form string="Affectation">
+                <sheet>
+                    <group>
+                        <group string="Équipement">
+                            <field name="equipement_id"/>
+                        </group>
+                        <group string="Affecté à">
+                            <field name="employe_id"/>
+                            <field name="department_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Période">
+                            <field name="date_affectation"/>
+                            <field name="date_retour"/>
+                            <field name="duree_jours" readonly="1"/>
+                            <field name="est_actuelle" readonly="1"/>
+                        </group>
+                        <group string="Informations">
+                            <field name="motif"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_it_affectation_search" model="ir.ui.view">
+        <field name="name">it.affectation.search</field>
+        <field name="model">it.affectation</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher une affectation">
+                <field name="equipement_id"/>
+                <field name="employe_id"/>
+                <field name="department_id"/>
+                <filter string="En cours" name="en_cours"
+                        domain="[('est_actuelle','=',True)]"/>
+                <filter string="Terminées" name="terminees"
+                        domain="[('est_actuelle','=',False)]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="Employé" name="group_employe"
+                            context="{'group_by': 'employe_id'}"/>
+                    <filter string="Département" name="group_dept"
+                            context="{'group_by': 'department_id'}"/>
+                    <filter string="Équipement" name="group_eq"
+                            context="{'group_by': 'equipement_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_it_affectation" model="ir.actions.act_window">
+        <field name="name">Affectations</field>
+        <field name="res_model">it.affectation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_affectation_search"/>
+        <field name="context">{'search_default_en_cours': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune affectation enregistrée.
+            </p>
+        </field>
+    </record>
+
+    <!-- Héritage vue fiche employé : ajout onglet équipements affectés -->
+    <record id="view_hr_employee_it_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.it.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Équipements IT" name="equipements_it">
+                    <field name="affectation_ids"
+                        domain="[('est_actuelle','=',True)]">
+                        <list>
+                            <field name="equipement_id"/>
+                            <field name="date_affectation"/>
+                            <field name="duree_jours"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

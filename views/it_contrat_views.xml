@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_it_contrat_list" model="ir.ui.view">
+        <field name="name">it.contrat.list</field>
+        <field name="model">it.contrat</field>
+        <field name="arch" type="xml">
+            <list string="Contrats"
+                decoration-danger="est_expire == True"
+                decoration-warning="expire_bientot == True">
+                <field name="name"/>
+                <field name="type_contrat"/>
+                <field name="fournisseur_id"/>
+                <field name="date_debut"/>
+                <field name="date_fin"/>
+                <field name="jours_restants"/>
+                <field name="montant"/>
+                <field name="nb_equipements"/>
+                <field name="etat" widget="badge"/>
+                <field name="est_expire" column_invisible="1"/>
+                <field name="expire_bientot" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_it_contrat_form" model="ir.ui.view">
+        <field name="name">it.contrat.form</field>
+        <field name="model">it.contrat</field>
+        <field name="arch" type="xml">
+            <form string="Contrat fournisseur">
+                <header>
+                    <field name="etat" widget="statusbar"
+                           statusbar_visible="actif,expire,resilie,renouvele"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-danger" role="alert"
+                         invisible="not est_expire">
+                        ⛔ Ce contrat est expiré.
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not expire_bientot">
+                        ⚠️ Ce contrat expire dans <field name="jours_restants" readonly="1"/> jour(s).
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Référence du contrat..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Informations générales">
+                            <field name="type_contrat"/>
+                            <field name="fournisseur_id"/>
+                            <field name="montant"/>
+                        </group>
+                        <group string="Période de validité">
+                            <field name="date_debut"/>
+                            <field name="date_fin"/>
+                            <field name="jours_restants" readonly="1"/>
+                            <field name="est_expire" readonly="1"/>
+                            <field name="expire_bientot" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Équipements couverts" name="equipements">
+                            <field name="equipement_ids">
+                                <list>
+                                    <field name="reference"/>
+                                    <field name="nom"/>
+                                    <field name="categorie_id"/>
+                                    <field name="employe_id"/>
+                                    <field name="etat" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_it_contrat_search" model="ir.ui.view">
+        <field name="name">it.contrat.search</field>
+        <field name="model">it.contrat</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un contrat">
+                <field name="name"/>
+                <field name="fournisseur_id"/>
+                <field name="type_contrat"/>
+                <filter string="Actifs" name="actifs"
+                        domain="[('etat','=','actif')]"/>
+                <filter string="Expirés" name="expires"
+                        domain="[('est_expire','=',True)]"/>
+                <filter string="Expirant sous 60j" name="expire_bientot"
+                        domain="[('expire_bientot','=',True)]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="Type" name="group_type"
+                            context="{'group_by': 'type_contrat'}"/>
+                    <filter string="Fournisseur" name="group_fourn"
+                            context="{'group_by': 'fournisseur_id'}"/>
+                    <filter string="État" name="group_etat"
+                            context="{'group_by': 'etat'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_it_contrat" model="ir.actions.act_window">
+        <field name="name">Contrats</field>
+        <field name="res_model">it.contrat</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_contrat_search"/>
+        <field name="context">{'search_default_actifs': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun contrat enregistré.
+            </p>
+            <p>Créez vos contrats fournisseurs pour suivre les garanties et licences.</p>
+        </field>
+    </record>
+
+    <!-- Héritage fiche fournisseur : ajout onglet contrats IT -->
+    <record id="view_res_partner_it_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.it.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Contrats IT" name="contrats_it">
+                    <field name="contrat_ids">
+                        <list>
+                            <field name="name"/>
+                            <field name="type_contrat"/>
+                            <field name="date_fin"/>
+                            <field name="jours_restants"/>
+                            <field name="etat" widget="badge"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_server_export_contrats" model="ir.actions.server">
+        <field name="name">Exporter contrats expirants Excel</field>
+        <field name="model_id" ref="model_it_contrat"/>
+        <field name="binding_model_id" ref="model_it_contrat"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_export_contrats_expirants()</field>
+    </record>
+
+</odoo>

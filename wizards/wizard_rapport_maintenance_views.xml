@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_wizard_rapport_maintenance_form" model="ir.ui.view">
+        <field name="name">wizard.rapport.maintenance.form</field>
+        <field name="model">wizard.rapport.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Rapport de maintenance par période">
+                <sheet>
+                    <group string="Période">
+                        <field name="date_debut"/>
+                        <field name="date_fin"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_imprimer"
+                            string="Générer le rapport PDF"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Annuler"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_rapport_maintenance" model="ir.actions.act_window">
+        <field name="name">Rapport de maintenance</field>
+        <field name="res_model">wizard.rapport.maintenance</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_it_intervention"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+</odoo>

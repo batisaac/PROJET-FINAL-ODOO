@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_maintenance" model="ir.actions.report">
+        <field name="name">Rapport de maintenance</field>
+        <field name="model">it.intervention</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">it_parc.report_maintenance_template</field>
+        <field name="report_file">it_parc.report_maintenance_template</field>
+        <field name="binding_model_id" ref="model_it_intervention"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_maintenance_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+
+                    <h2>Rapport de Maintenance</h2>
+                    <p class="text-muted">
+                        Généré le : <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                        — Total : <t t-esc="len(docs)"/> intervention(s)
+                    </p>
+
+                    <hr/>
+
+                    <!-- Résumé -->
+                    <div class="row mt-4">
+                        <div class="col-3 text-center">
+                            <h4><t t-esc="len(docs.filtered(lambda i: i.maintenance_type == 'corrective'))"/></h4>
+                            <small>Correctives</small>
+                        </div>
+                        <div class="col-3 text-center">
+                            <h4><t t-esc="len(docs.filtered(lambda i: i.maintenance_type == 'preventive'))"/></h4>
+                            <small>Préventives</small>
+                        </div>
+                        <div class="col-3 text-center">
+                            <h4><t t-esc="sum(docs.mapped('cout'))"/> FCFA</h4>
+                            <small>Coût total</small>
+                        </div>
+                        <div class="col-3 text-center">
+                            <h4><t t-esc="round(sum(docs.mapped('duree_heures')), 1)"/> h</h4>
+                            <small>Durée totale</small>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <!-- Table des interventions -->
+                    <table class="table table-sm table-bordered mt-4">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Référence</th>
+                                <th>Équipement IT</th>
+                                <th>Type</th>
+                                <th>Responsable</th>
+                                <th>Date début</th>
+                                <th>Date fin</th>
+                                <th>Durée (h)</th>
+                                <th>Coût (FCFA)</th>
+                                <th>État</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="doc">
+                                <tr>
+                                    <td><t t-esc="doc.name"/></td>
+                                    <td><t t-esc="doc.equipement_id.nom or doc.equipment_id.name or '-'"/></td>
+                                    <td><t t-esc="doc.maintenance_type"/></td>
+                                    <td><t t-esc="doc.user_id.name or '-'"/></td>
+                                    <td><t t-esc="doc.schedule_date or '-'"/></td>
+                                    <td><t t-esc="doc.close_date or '-'"/></td>
+                                    <td><t t-esc="round(doc.duree_heures, 1)"/></td>
+                                    <td><t t-esc="doc.cout"/></td>
+                                    <td><t t-esc="doc.stage_id.name"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-secondary">
+                                <td colspan="6"><strong>Total</strong></td>
+                                <td><strong><t t-esc="round(sum(docs.mapped('duree_heures')), 1)"/> h</strong></td>
+                                <td><strong><t t-esc="sum(docs.mapped('cout'))"/> FCFA</strong></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

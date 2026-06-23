@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Entrée principale dans la barre de navigation -->
+    <menuitem id="menu_it_parc_root"
+              name="IT Parc"
+              sequence="10"
+              web_icon="it_parc,static/description/icon.png"/>
+
+    <!-- Niveau 1 : Parc informatique -->
+    <menuitem id="menu_it_parc_main"
+              name="Parc informatique"
+              parent="menu_it_parc_root"
+              sequence="10"/>
+
+    <menuitem id="menu_it_equipement"
+              name="Équipements"
+              parent="menu_it_parc_main"
+              action="action_it_equipement"
+              sequence="10"/>
+
+    <menuitem id="menu_it_affectation"
+              name="Affectations"
+              parent="menu_it_parc_main"
+              action="action_it_affectation"
+              sequence="20"/>
+
+    <!-- Niveau 1 : Maintenance -->
+    <menuitem id="menu_it_maintenance"
+              name="Maintenance"
+              parent="menu_it_parc_root"
+              sequence="20"/>
+
+    <menuitem id="menu_it_intervention"
+              name="Interventions"
+              parent="menu_it_maintenance"
+              action="action_it_intervention"
+              sequence="10"/>
+
+    <!-- Niveau 1 : Contrats et alertes -->
+    <menuitem id="menu_it_contrats_alertes"
+              name="Contrats &amp; Alertes"
+              parent="menu_it_parc_root"
+              sequence="30"/>
+
+    <menuitem id="menu_it_contrat"
+              name="Contrats"
+              parent="menu_it_contrats_alertes"
+              action="action_it_contrat"
+              sequence="10"/>
+
+    <menuitem id="menu_it_alerte"
+            name="Alertes"
+            parent="menu_it_contrats_alertes"
+            action="action_it_alerte"
+            sequence="20"/>
+
+
+    <!-- Niveau 1 : Rapports -->
+    <menuitem id="menu_it_rapports"
+              name="Rapports"
+              parent="menu_it_parc_root"
+              sequence="40"/>
+
+    <record id="action_it_dashboard" model="ir.actions.client">
+              <field name="name">Dashboard IT</field>
+              <field name="tag">it_parc.dashboard</field>
+    </record>
+
+    <menuitem id="menu_it_dashboard"
+              name="Dashboard"
+              parent="menu_it_parc_root"
+              action="action_it_dashboard"
+              sequence="1"/>
+
+
+</odoo>

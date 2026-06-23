@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Héritage de la vue formulaire de maintenance.request
+         On ajoute uniquement nos champs custom après les champs existants -->
+    <record id="view_it_intervention_form_inherit" model="ir.ui.view">
+        <field name="name">it.intervention.form.inherit</field>
+        <field name="model">it.intervention</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Ajout de notre équipement IT après equipment_id natif -->
+            <xpath expr="//field[@name='equipment_id']" position="after">
+                <field name="equipement_id"/>
+                <field name="type_intervention"/>
+            </xpath>
+
+            <!-- Ajout coût et durée après schedule_date -->
+            <xpath expr="//field[@name='schedule_date']" position="after">
+                <field name="cout"/>
+                <field name="duree_heures" readonly="1"/>
+            </xpath>
+
+            <!-- Ajout onglet rapport après l'onglet Instructions -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Rapport d'intervention" name="rapport">
+                    <field name="rapport_intervention" placeholder="Décrivez les actions réalisées, pièces remplacées, résultat..."/>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Héritage de la vue liste -->
+    <record id="view_it_intervention_list" model="ir.ui.view">
+        <field name="name">it.intervention.list</field>
+        <field name="model">it.intervention</field>
+        <field name="arch" type="xml">
+            <list string="Interventions IT">
+                <field name="name"/>
+                <field name="equipement_id"/>
+                <field name="maintenance_type"/>
+                <field name="type_intervention"/>
+                <field name="user_id" string="Responsable"/>
+                <field name="schedule_date" string="Date début"/>
+                <field name="close_date" string="Date fin"/>
+                <field name="duree_heures"/>
+                <field name="cout"/>
+                <field name="stage_id" string="État"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action propre à nos interventions IT
+         Filtre par défaut pour ne montrer que les interventions it.intervention -->
+    <record id="action_it_intervention" model="ir.actions.act_window">
+        <field name="name">Interventions IT</field>
+        <field name="res_model">it.intervention</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5,0,0),
+            (0,0,{'view_mode':'list','view_id':ref('view_it_intervention_list')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune intervention enregistrée.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_server_export_couts" model="ir.actions.server">
+        <field name="name">Exporter coûts maintenance Excel</field>
+        <field name="model_id" ref="model_it_intervention"/>
+        <field name="binding_model_id" ref="model_it_intervention"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_export_couts_maintenance()</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Catégorie du module dans les paramètres de sécurité -->
+        <record id="module_category_it_parc" model="ir.module.category">
+            <field name="name">IT Parc</field>
+            <field name="description">Gestion du parc informatique TECHPARK CI</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- Groupe 1 : IT Technicien
+             Peut lire tous les équipements, créer et modifier des interventions.
+             Ne peut pas supprimer ni accéder à la configuration. -->
+        <record id="group_it_technicien" model="res.groups">
+            <field name="name">IT Technicien</field>
+            <field name="category_id" ref="module_category_it_parc"/>
+            <field name="comment">Accès en lecture au parc, création et suivi des interventions.</field>
+        </record>
+
+        <!-- Groupe 2 : IT Manager
+             Accès complet à tous les modèles du module.
+             Inclut automatiquement les droits du Technicien. -->
+        <record id="group_it_manager" model="res.groups">
+            <field name="name">IT Manager</field>
+            <field name="category_id" ref="module_category_it_parc"/>
+            <field name="implied_ids" eval="[(4, ref('group_it_technicien'))]"/>
+            <field name="comment">Accès complet : équipements, contrats, alertes, rapports, configuration.</field>
+        </record>
+
+    </data>
+</odoo>

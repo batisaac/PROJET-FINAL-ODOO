@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="it_parc.ItDashboard">
+        <div class="it-dashboard o_action">
+
+            <div class="it-dashboard-header">
+                <h2>Tableau de bord — DSI</h2>
+                <p class="text-muted">État du parc informatique en temps réel</p>
+                <button class="btn btn-outline-primary" t-on-click="refresh">
+                    <i class="fa fa-refresh"/> Actualiser
+                </button>
+            </div>
+
+            <t t-if="state.loading">
+                <div class="it-dashboard-loading">
+                    <i class="fa fa-spinner fa-spin fa-2x"/>
+                    <p>Chargement des données...</p>
+                </div>
+            </t>
+
+            <t t-else="">
+
+                <!-- KPIs -->
+                <div class="it-dashboard-kpis">
+
+                    <div class="it-kpi it-kpi-blue">
+                        <i class="fa fa-desktop fa-2x it-kpi-icon"/>
+                        <div class="it-kpi-body">
+                            <div class="it-kpi-value">
+                                <t t-esc="state.totalActifs"/>
+                            </div>
+                            <div class="it-kpi-label">Équipements actifs</div>
+                        </div>
+                    </div>
+
+                    <div class="it-kpi it-kpi-green">
+                        <i class="fa fa-check-circle fa-2x it-kpi-icon"/>
+                        <div class="it-kpi-body">
+                            <div class="it-kpi-value">
+                                <t t-esc="state.tauxDisponibilite"/>%
+                            </div>
+                            <div class="it-kpi-label">Taux de disponibilité</div>
+                        </div>
+                    </div>
+
+                    <div class="it-kpi it-kpi-orange">
+                        <i class="fa fa-bell fa-2x it-kpi-icon"/>
+                        <div class="it-kpi-body">
+                            <div class="it-kpi-value">
+                                <t t-esc="state.alertesActives"/>
+                            </div>
+                            <div class="it-kpi-label">Alertes actives</div>
+                        </div>
+                    </div>
+
+                    <div class="it-kpi it-kpi-purple">
+                        <i class="fa fa-euro fa-2x it-kpi-icon"/>
+                        <div class="it-kpi-body">
+                            <div class="it-kpi-value">
+                                <t t-esc="formatMontant(state.coutAnnee)"/>
+                            </div>
+                            <div class="it-kpi-label">Coût maintenance <t t-esc="new Date().getFullYear()"/></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Graphique -->
+                <div class="it-dashboard-chart">
+                    <h4>Répartition des équipements par catégorie</h4>
+                    <t t-if="state.repartitionCategories.length">
+                        <canvas t-ref="chartCanvas"/>
+                    </t>
+                    <t t-else="">
+                        <p class="text-muted">Aucun équipement enregistré.</p>
+                    </t>
+                </div>
+
+            </t>
+        </div>
+    </t>
+
+</templates>

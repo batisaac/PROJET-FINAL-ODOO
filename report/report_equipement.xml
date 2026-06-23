@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Action qui déclare le rapport et l'accroche au modèle -->
+    <record id="action_report_equipement" model="ir.actions.report">
+        <field name="name">Fiche équipement</field>
+        <field name="model">it.equipement</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">it_parc.report_equipement_template</field>
+        <field name="report_file">it_parc.report_equipement_template</field>
+        <field name="binding_model_id" ref="model_it_equipement"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Template QWeb du rapport -->
+    <template id="report_equipement_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <h2>Fiche Équipement</h2>
+                        <h3><t t-esc="doc.nom"/></h3>
+                        <p class="text-muted">Référence : <t t-esc="doc.reference"/></p>
+
+                        <hr/>
+
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <h5>Identification</h5>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Numéro de série</strong></td>
+                                        <td><t t-esc="doc.numero_serie"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Catégorie</strong></td>
+                                        <td><t t-esc="doc.categorie_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Marque</strong></td>
+                                        <td><t t-esc="doc.marque"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Modèle</strong></td>
+                                        <td><t t-esc="doc.modele"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>État</strong></td>
+                                        <td><t t-esc="doc.etat"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h5>Affectation</h5>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Employé</strong></td>
+                                        <td><t t-esc="doc.employe_id.name or '-'"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Département</strong></td>
+                                        <td><t t-esc="doc.department_id.name or '-'"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Localisation</strong></td>
+                                        <td><t t-esc="doc.localisation or '-'"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <h5>Informations financières</h5>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Valeur d'achat</strong></td>
+                                        <td><t t-esc="doc.valeur_achat"/> FCFA</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Date d'achat</strong></td>
+                                        <td><t t-esc="doc.date_achat"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Fin de garantie</strong></td>
+                                        <td><t t-esc="doc.date_fin_garantie"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Jours garantie restants</strong></td>
+                                        <td><t t-esc="doc.jours_garantie_restants"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h5>Statistiques</h5>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Nb interventions</strong></td>
+                                        <td><t t-esc="doc.nb_interventions"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Coût total maintenance</strong></td>
+                                        <td><t t-esc="doc.cout_total_maintenance"/> FCFA</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Alertes actives</strong></td>
+                                        <td><t t-esc="doc.nb_alertes"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Historique des interventions -->
+                        <t t-if="doc.intervention_ids">
+                            <h5 class="mt-4">Historique des interventions</h5>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Type</th>
+                                        <th>Date début</th>
+                                        <th>Date fin</th>
+                                        <th>Coût (FCFA)</th>
+                                        <th>État</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.intervention_ids" t-as="inter">
+                                        <tr>
+                                            <td><t t-esc="inter.name"/></td>
+                                            <td><t t-esc="inter.maintenance_type"/></td>
+                                            <td><t t-esc="inter.schedule_date"/></td>
+                                            <td><t t-esc="inter.close_date or '-'"/></td>
+                                            <td><t t-esc="inter.cout"/></td>
+                                            <td><t t-esc="inter.stage_id.name"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <!-- Caractéristiques techniques -->
+                        <t t-if="doc.description">
+                            <h5 class="mt-4">Caractéristiques techniques</h5>
+                            <p><t t-esc="doc.description"/></p>
+                        </t>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
